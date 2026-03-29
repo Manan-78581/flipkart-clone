@@ -20,7 +20,7 @@ const Wishlist: React.FC = () => {
   return (
     <main className="max-w-7xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold mb-6">My Wishlist ({wishlist.length})</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-6">
         {wishlist.map((product: Product) => {
           const discount = product.original_price
             ? Math.round(((product.original_price - product.price) / product.original_price) * 100)
@@ -39,22 +39,22 @@ const Wishlist: React.FC = () => {
                 <div className="aspect-square mb-3 overflow-hidden rounded-lg">
                   <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover hover:scale-105 transition-transform duration-200" />
                 </div>
-                <h3 className="text-sm font-medium text-gray-900 mb-1 line-clamp-2">{product.name}</h3>
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-base font-bold text-gray-900">₹{Number(product.price).toLocaleString()}</span>
+                <h3 className="text-xs sm:text-sm font-medium text-gray-900 mb-1 lg:mb-2 line-clamp-2">{product.name}</h3>
+                <div className="flex flex-wrap items-center gap-1 sm:gap-2 mb-3">
+                  <span className="text-sm sm:text-base font-bold text-gray-900">₹{Number(product.price).toLocaleString()}</span>
                   {product.original_price && (
                     <>
                       <span className="text-xs text-gray-500 line-through">₹{Number(product.original_price).toLocaleString()}</span>
-                      <span className="text-xs text-green-600 font-medium">{discount}% off</span>
+                      <span className="text-[10px] sm:text-xs text-green-600 font-medium">{discount}% off</span>
                     </>
                   )}
                 </div>
               </Link>
               <button
                 onClick={() => { addToCart(product); addToast(`${product.name} added to cart!`, 'success'); }}
-                className="w-full py-2 bg-orange-500 text-white text-sm font-medium rounded-lg hover:bg-orange-600"
+                className="w-full py-2 bg-[#ff9f00] text-white text-xs sm:text-sm font-semibold rounded-sm shadow-sm hover:bg-[#e68f00]"
               >
-                Add to Cart
+                ADD TO CART
               </button>
             </div>
           );

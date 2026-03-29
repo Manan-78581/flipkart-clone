@@ -120,20 +120,20 @@ const ProductDetail: React.FC = () => {
             <p className="text-gray-700">{product.description}</p>
           </div>
 
-          <div className="space-y-4">
+          <div className="flex w-full mt-4 border-t pt-4 gap-3">
             <button
               onClick={handleAddToCart}
               disabled={product.stock === 0}
-              className="w-full py-3 px-6 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+              className="flex-1 py-3.5 px-4 bg-white border border-gray-300 text-[#1C2B33] font-semibold text-base sm:text-lg flex items-center justify-center transition-colors hover:bg-gray-50 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed rounded-xl"
             >
-              Add to Cart
+              <span>Add to cart</span>
             </button>
             <button
               onClick={handleBuyNow}
               disabled={product.stock === 0}
-              className="w-full py-3 px-6 bg-red-500 text-white font-medium rounded-lg hover:bg-red-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+              className="flex-1 py-3.5 px-4 bg-[#FFD700] text-[#1C2B33] font-semibold text-base sm:text-lg flex items-center justify-center transition-opacity hover:opacity-90 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed rounded-xl"
             >
-              Buy Now
+              <span>Buy at ₹{product.price.toLocaleString()}</span>
             </button>
           </div>
         </div>

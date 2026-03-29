@@ -29,17 +29,17 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <div className="aspect-square mb-4 overflow-hidden rounded-lg">
           <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover hover:scale-105 transition-transform duration-200" />
         </div>
-        <h3 className="text-lg font-medium text-gray-900 mb-2 line-clamp-2">{product.name}</h3>
+        <h3 className="text-sm sm:text-lg font-medium text-gray-900 mb-1 sm:mb-2 line-clamp-2">{product.name}</h3>
         <div className="flex items-center mb-2">
           <span className="text-yellow-400 text-sm">★</span>
           <span className="text-sm text-gray-600 ml-1">{product.rating} ({product.reviews})</span>
         </div>
-        <div className="flex items-center gap-2 mb-2">
-          <span className="text-xl font-bold text-gray-900">₹{Number(product.price).toLocaleString()}</span>
+        <div className="flex items-center flex-wrap gap-1 sm:gap-2 mb-2">
+          <span className="text-lg sm:text-xl font-bold text-gray-900">₹{Number(product.price).toLocaleString()}</span>
           {product.original_price && (
             <>
-              <span className="text-sm text-gray-500 line-through">₹{Number(product.original_price).toLocaleString()}</span>
-              <span className="text-sm text-green-600 font-medium">{discount}% off</span>
+              <span className="text-xs sm:text-sm text-gray-500 line-through">₹{Number(product.original_price).toLocaleString()}</span>
+              <span className="text-xs sm:text-sm text-green-600 font-medium">{discount}% off</span>
             </>
           )}
         </div>

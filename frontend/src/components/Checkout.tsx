@@ -90,7 +90,7 @@ const Checkout: React.FC = () => {
                 <input type="text" name="zipCode" value={formData.zipCode} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" />
               </div>
             </div>
-            <button type="submit" disabled={loading} className="w-full py-3 px-6 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed">
+            <button type="submit" disabled={loading} className="w-full py-4 px-6 bg-[#fb641b] text-white font-bold text-lg rounded-[2px] shadow-md hover:bg-[#e05a18] transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed uppercase">
               {loading ? 'Placing Order...' : 'Place Order'}
             </button>
           </form>

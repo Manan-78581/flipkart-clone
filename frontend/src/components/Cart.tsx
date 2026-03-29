@@ -24,13 +24,13 @@ const Cart: React.FC = () => {
                   <div className="flex-1 min-w-0">
                     <h3 className="text-sm sm:text-base font-medium text-gray-900 line-clamp-2">{item.product.name}</h3>
                     <p className="text-gray-600 text-sm">₹{Number(item.product.price).toLocaleString()}</p>
-                    <div className="flex items-center justify-between mt-2">
+                    <div className="flex flex-wrap items-center justify-between mt-2 gap-2">
                       <div className="flex items-center gap-1">
                         <button onClick={() => updateQuantity(item.product.id, item.quantity - 1)} className="w-7 h-7 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 flex items-center justify-center font-bold">-</button>
                         <span className="px-3 py-1 border rounded text-sm">{item.quantity}</span>
                         <button onClick={() => updateQuantity(item.product.id, item.quantity + 1)} className="w-7 h-7 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 flex items-center justify-center font-bold">+</button>
                       </div>
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-3 ml-auto sm:ml-0">
                         <p className="text-sm font-medium">₹{(item.product.price * item.quantity).toLocaleString()}</p>
                         <button onClick={() => removeFromCart(item.product.id)} className="text-red-600 hover:text-red-800">
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -61,7 +61,7 @@ const Cart: React.FC = () => {
                 <span>₹{getTotalPrice().toLocaleString()}</span>
               </div>
             </div>
-            <Link to="/checkout" className="w-full block text-center py-3 px-6 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600">
+            <Link to="/checkout" className="w-full block text-center py-4 px-6 bg-[#fb641b] text-white font-bold text-lg shadow-md rounded-[2px] hover:bg-[#e05a18] transition-colors uppercase">
               Proceed to Checkout
             </Link>
           </div>

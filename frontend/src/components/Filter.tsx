@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const categoryIcons: Record<string, JSX.Element> = {
   'For You': (
@@ -127,12 +128,12 @@ const categoryKey = (cat: string) => {
   if (cat === 'Electronics') return 'Electronics';
   if (cat === 'Home') return 'Home';
   if (cat === 'Appliances') return 'Appliances';
-  if (cat === 'Toys' || cat === 'Kids') return 'Toys';
-  if (cat === 'Food') return 'Food';
-  if (cat === 'Auto') return 'Auto';
+  if (cat.includes('Toy') || cat === 'Kids') return 'Toys';
+  if (cat.includes('Food') || cat.includes('Health')) return 'Food';
+  if (cat.includes('Auto')) return 'Auto';
   if (cat === '2 Wheelers') return '2 Wheelers';
-  if (cat === 'Sports') return 'Sports';
-  if (cat === 'Books') return 'Books';
+  if (cat.includes('Sport')) return 'Sports';
+  if (cat.includes('Book')) return 'Books';
   if (cat === 'Furniture') return 'Furniture';
   return cat;
 };
@@ -143,31 +144,46 @@ interface FilterProps {
   onChange: (category: string) => void;
 }
 
-const Filter: React.FC<FilterProps> = ({ categories, selectedCategory, onChange }) => (
-  <div className="flex justify-center overflow-x-auto border-b border-gray-200 scrollbar-hide">
-    {categories.map((category) => {
-      const key = categoryKey(category);
-      const icon = categoryIcons[key];
-      if (!icon) return null;
-      const isSelected = selectedCategory === category;
-      return (
-        <button
-          key={category}
-          onClick={() => onChange(category)}
-          className={`flex flex-col items-center px-4 py-3 min-w-[80px] flex-shrink-0 border-b-2 transition-colors duration-150 ${
-            isSelected ? 'border-blue-600' : 'border-transparent hover:border-gray-300'
-          }`}
-        >
-          <div className={isSelected ? '[&_path]:stroke-[#f0c000] [&_rect]:stroke-[#f0c000] [&_circle]:stroke-[#f0c000] [&_line]:stroke-[#f0c000] [&_ellipse]:stroke-[#f0c000]' : ''}>
-            {icon}
-          </div>
-          <span className={`text-xs mt-1 whitespace-nowrap ${isSelected ? 'text-blue-600 font-semibold' : 'text-gray-600'}`}>
-            {category}
-          </span>
-        </button>
-      );
-    })}
-  </div>
-);
+const Filter: React.FC<FilterProps> = ({ categories, selectedCategory, onChange }) => {
+  const navigate = useNavigate();
+  const allCategories = ['For You', ...categories];
+
+  const handleClick = (category: string) => {
+    if (category === 'For You') {
+      onChange('');
+      navigate('/', { replace: true });
+    } else {
+      onChange(category);
+      navigate(`/?category=${encodeURIComponent(category)}`, { replace: true });
+    }
+  };
+
+  return (
+    <div className="flex justify-start lg:justify-center overflow-x-auto border-b border-gray-200 scrollbar-hide">
+      {allCategories.map((category) => {
+        const key = categoryKey(category);
+        const icon = categoryIcons[key];
+        if (!icon) return null;
+        const isSelected = selectedCategory === category || (category === 'For You' && selectedCategory === '');
+        return (
+          <button
+            key={category}
+            onClick={() => handleClick(category)}
+            className={`flex flex-col items-center px-4 py-3 min-w-[80px] flex-shrink-0 border-b-2 transition-colors duration-150 ${
+              isSelected ? 'border-blue-600' : 'border-transparent hover:border-gray-300'
+            }`}
+          >
+            <div className={isSelected ? '[&_path]:stroke-[#f0c000] [&_rect]:stroke-[#f0c000] [&_circle]:stroke-[#f0c000] [&_line]:stroke-[#f0c000] [&_ellipse]:stroke-[#f0c000]' : ''}>
+              {icon}
+            </div>
+            <span className={`text-xs mt-1 whitespace-nowrap ${isSelected ? 'text-blue-600 font-semibold' : 'text-gray-600'}`}>
+              {category}
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  );
+};
 
 export default Filter;
