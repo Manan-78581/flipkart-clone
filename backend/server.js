@@ -5,7 +5,7 @@ const cors = require('cors');
 const pool = require('./db');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 
 const allowedOrigins = process.env.FRONTEND_URL
   ? [process.env.FRONTEND_URL]
