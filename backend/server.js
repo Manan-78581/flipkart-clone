@@ -17,6 +17,11 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// GET /ping
+app.get('/ping', (req, res) => {
+  res.send('Server alive');
+});
+
 // GET /api/products
 app.get('/api/products', async (req, res) => {
   const { search, category } = req.query;

@@ -3,6 +3,23 @@ import { useNavigate } from 'react-router-dom';
 import { useCart, CartItem } from '../context/CartContext';
 import { useToast } from '../context/ToastContext';
 
+const STATE_CITY_MAP: Record<string, string[]> = {
+  "Andhra Pradesh": ["Visakhapatnam", "Vijayawada", "Guntur", "Nellore"],
+  "Bihar": ["Patna", "Gaya", "Bhagalpur", "Muzaffarpur"],
+  "Delhi": ["New Delhi"],
+  "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot"],
+  "Haryana": ["Gurugram", "Faridabad", "Panipat", "Ambala"],
+  "Karnataka": ["Bengaluru", "Mysuru", "Mangaluru", "Hubli"],
+  "Kerala": ["Thiruvananthapuram", "Kochi", "Kozhikode", "Thrissur"],
+  "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Nashik", "Thane"],
+  "Punjab": ["Ludhiana", "Amritsar", "Jalandhar", "Patiala"],
+  "Rajasthan": ["Jaipur", "Jodhpur", "Udaipur", "Kota"],
+  "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Salem"],
+  "Telangana": ["Hyderabad", "Warangal", "Nizamabad"],
+  "Uttar Pradesh": ["Lucknow", "Kanpur", "Agra", "Varanasi", "Noida"],
+  "West Bengal": ["Kolkata", "Howrah", "Darjeeling", "Siliguri"]
+};
+
 const Checkout: React.FC = () => {
   const navigate = useNavigate();
   const { cart, getTotalPrice, clearCart } = useCart();
@@ -13,9 +30,13 @@ const Checkout: React.FC = () => {
   });
   const [loading, setLoading] = useState(false);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    if (name === 'state') {
+      setFormData(prev => ({ ...prev, state: value, city: '' }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -78,12 +99,18 @@ const Checkout: React.FC = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">City *</label>
-                <input type="text" name="city" value={formData.city} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" />
+                <label className="block text-sm font-medium text-gray-700 mb-1">State *</label>
+                <select name="state" value={formData.state} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 bg-white">
+                  <option value="">Select State</option>
+                  {Object.keys(STATE_CITY_MAP).sort().map(s => <option key={s} value={s}>{s}</option>)}
+                </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">State *</label>
-                <input type="text" name="state" value={formData.state} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" />
+                <label className="block text-sm font-medium text-gray-700 mb-1">City *</label>
+                <select name="city" value={formData.city} onChange={handleInputChange} required disabled={!formData.state} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 bg-white disabled:bg-gray-100 disabled:cursor-not-allowed">
+                  <option value="">Select City</option>
+                  {formData.state && STATE_CITY_MAP[formData.state]?.sort().map(c => <option key={c} value={c}>{c}</option>)}
+                </select>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">ZIP Code *</label>

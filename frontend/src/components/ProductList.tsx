@@ -113,12 +113,32 @@ const ProductList: React.FC<{ searchTerm: string }> = ({ searchTerm }) => {
   };
 
   useEffect(() => {
-    Promise.all([
-      fetch(`${process.env.REACT_APP_API_URL}/api/products`).then(r => r.json()),
-      fetch(`${process.env.REACT_APP_API_URL}/api/categories`).then(r => r.json()),
-    ])
-      .then(([prods, cats]) => { setProducts(prods); setCategories(cats); setLoading(false); })
-      .catch(() => setLoading(false));
+    const fetchData = async (retries = 5) => {
+      try {
+        const [prodsRes, catsRes] = await Promise.all([
+          fetch(`${process.env.REACT_APP_API_URL}/api/products`),
+          fetch(`${process.env.REACT_APP_API_URL}/api/categories`)
+        ]);
+        
+        if (!prodsRes.ok || !catsRes.ok) throw new Error("Failed to fetch");
+
+        const prods = await prodsRes.json();
+        const cats = await catsRes.json();
+
+        setProducts(prods);
+        setCategories(cats);
+        setLoading(false);
+      } catch (err) {
+        if (retries > 0) {
+          setTimeout(() => fetchData(retries - 1), 3000);
+        } else {
+          console.error("Server still sleeping", err);
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchData();
   }, []);
 
   const banners = selectedCategory ? (categoryBanners[selectedCategory] || []) : [];
@@ -145,7 +165,7 @@ const ProductList: React.FC<{ searchTerm: string }> = ({ searchTerm }) => {
 
   if (loading) return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <p className="text-lg text-gray-600">Loading products...</p>
+      <p className="text-lg text-gray-600">Loading products... (server waking up)</p>
     </div>
   );
 

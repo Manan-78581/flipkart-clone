@@ -16,14 +16,19 @@ const ProductDetail: React.FC = () => {
 
   useEffect(() => {
     if (!id) return;
-    const fetchProduct = async () => {
+    const fetchProduct = async (retries = 5) => {
       try {
         const response = await fetch(`${process.env.REACT_APP_API_URL}/api/products/${id}`);
-        if (response.ok) setProduct(await response.json());
-      } catch (error) {
-        console.error('Error fetching product:', error);
-      } finally {
+        if (!response.ok) throw new Error("Failed to fetch");
+        setProduct(await response.json());
         setLoading(false);
+      } catch (error) {
+        if (retries > 0) {
+          setTimeout(() => fetchProduct(retries - 1), 3000);
+        } else {
+          console.error('Error fetching product:', error);
+          setLoading(false);
+        }
       }
     };
     fetchProduct();
@@ -54,7 +59,7 @@ const ProductDetail: React.FC = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <p className="text-lg text-gray-600">Loading product...</p>
+        <p className="text-lg text-gray-600">Loading product... (server waking up)</p>
       </div>
     );
   }
